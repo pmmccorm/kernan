@@ -9,6 +9,7 @@ using Grace.Utility;
 namespace Grace.Parsing
 {
     /// <summary>A token of Grace source</summary>
+    [Serializable]
     public abstract class Token
     {
         /// <summary>Module this token was found in</summary>
@@ -68,6 +69,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class IdentifierToken : Token
     {
         private string _name;
@@ -89,6 +91,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class AsToken : IdentifierToken
     {
         public AsToken(string module, int line, int column)
@@ -102,6 +105,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class StringToken : Token
     {
         private string _value;
@@ -164,6 +168,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class NumberToken : Token
     {
         private int _base;
@@ -202,6 +207,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class OperatorToken : Token
     {
         private string _name;
@@ -246,6 +252,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class BracketToken : Token
     {
         private string _name;
@@ -296,6 +303,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class OpenBracketToken : BracketToken
     {
         public OpenBracketToken(string module, int line, int column,
@@ -311,6 +319,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class CloseBracketToken : BracketToken
     {
         public CloseBracketToken(string module, int line, int column,
@@ -326,6 +335,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class CommentToken : Token
     {
         private string _value;
@@ -348,6 +358,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class SpaceToken : Token
     {
         private int _size;
@@ -370,6 +381,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class LParenToken : Token
     {
         public LParenToken(string module, int line, int column)
@@ -382,6 +394,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class RParenToken : Token
     {
         public RParenToken(string module, int line, int column)
@@ -394,6 +407,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class LBraceToken : Token
     {
         public LBraceToken(string module, int line, int column)
@@ -406,6 +420,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class RBraceToken : Token
     {
         public RBraceToken(string module, int line, int column)
@@ -418,6 +433,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class LGenericToken : Token
     {
         public LGenericToken(string module, int line, int column)
@@ -430,6 +446,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class RGenericToken : Token
     {
         public RGenericToken(string module, int line, int column)
@@ -442,6 +459,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class KeywordToken : Token
     {
         public KeywordToken(string module, int line, int column)
@@ -454,6 +472,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class ObjectKeywordToken : KeywordToken
     {
         public ObjectKeywordToken(string module, int line, int column)
@@ -466,6 +485,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class VarKeywordToken : KeywordToken
     {
         public VarKeywordToken(string module, int line, int column)
@@ -478,6 +498,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class DefKeywordToken : KeywordToken
     {
         public DefKeywordToken(string module, int line, int column)
@@ -490,6 +511,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class MethodKeywordToken : KeywordToken
     {
         public MethodKeywordToken(string module, int line, int column)
@@ -502,6 +524,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class ClassKeywordToken : KeywordToken
     {
         public ClassKeywordToken(string module, int line, int column)
@@ -514,6 +537,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class TraitKeywordToken : KeywordToken
     {
         public TraitKeywordToken(string module, int line, int column)
@@ -526,6 +550,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class InheritsKeywordToken : KeywordToken
     {
         public InheritsKeywordToken(string module, int line, int column)
@@ -538,6 +563,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class UsesKeywordToken : KeywordToken
     {
         public UsesKeywordToken(string module, int line, int column)
@@ -550,6 +576,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class DialectKeywordToken : KeywordToken
     {
         public DialectKeywordToken(string module, int line, int column)
@@ -562,6 +589,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class ImportKeywordToken : KeywordToken
     {
         public ImportKeywordToken(string module, int line, int column)
@@ -574,6 +602,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class TypeKeywordToken : KeywordToken
     {
         public TypeKeywordToken(string module, int line, int column)
@@ -586,6 +615,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class ReturnKeywordToken : KeywordToken
     {
         public ReturnKeywordToken(string module, int line, int column)
@@ -598,6 +628,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class IsKeywordToken : KeywordToken
     {
         public IsKeywordToken(string module, int line, int column)
@@ -610,6 +641,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class WhereKeywordToken : KeywordToken
     {
         public WhereKeywordToken(string module, int line, int column)
@@ -622,6 +654,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class OuterKeywordToken : KeywordToken
     {
         public OuterKeywordToken(string module, int line, int column)
@@ -634,6 +667,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class SelfKeywordToken : KeywordToken
     {
         public SelfKeywordToken(string module, int line, int column)
@@ -646,6 +680,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class AliasKeywordToken : KeywordToken
     {
         public AliasKeywordToken(string module, int line, int column)
@@ -658,6 +693,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class ExcludeKeywordToken : KeywordToken
     {
         public ExcludeKeywordToken(string module, int line, int column)
@@ -670,6 +706,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class SemicolonToken : Token
     {
         public SemicolonToken(string module, int line, int column)
@@ -682,6 +719,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class CommaToken : Token
     {
         public CommaToken(string module, int line, int column)
@@ -694,6 +732,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class DotToken : Token
     {
         public DotToken(string module, int line, int column)
@@ -706,6 +745,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class BindToken : Token
     {
         public BindToken(string module, int line, int column)
@@ -718,6 +758,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class ColonToken : Token
     {
         public ColonToken(string module, int line, int column)
@@ -730,6 +771,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class ArrowToken : Token
     {
         public ArrowToken(string module, int line, int column)
@@ -742,6 +784,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class SingleEqualsToken : Token
     {
         public SingleEqualsToken(string module, int line, int column)
@@ -754,6 +797,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class NewLineToken : Token
     {
         public NewLineToken(string module, int line, int column)
@@ -766,6 +810,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class EndToken : Token
     {
         public EndToken(string module, int line, int column)
@@ -783,6 +828,7 @@ namespace Grace.Parsing
         }
     }
 
+    [Serializable]
     class UnknownToken : Token
     {
         public UnknownToken(string module, int line, int column)

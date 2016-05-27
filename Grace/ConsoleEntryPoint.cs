@@ -27,6 +27,7 @@ namespace Grace
             string mode = "run";
             string prettyOption = "";
             bool verbose = false;
+            bool useCache = true;
             string errorCodeTarget = null;
             var lines = new List<string>();
             string builtinsExtensionFile = null;
@@ -56,6 +57,8 @@ namespace Grace
                     mode = "no-run";
                 else if (arg == "--repl")
                     mode = "repl";
+                else if (arg == "--no-cache")
+                    useCache = false;
                 else if (arg == "--ws")
                     mode = "ws";
                 else if (arg == "--verbose")
@@ -119,87 +122,89 @@ namespace Grace
                 return 1;
             if (filename == null)
                 return 0;
-            using (StreamReader reader = File.OpenText(filename))
+
+            try
             {
-                Parser parser = new Parser(
-                        Path.GetFileNameWithoutExtension(filename),
-                        reader.ReadToEnd());
+                if (mode == "parse-tree")
+                {
+                    module = ObjectCache.parse(filename);
+                    module.DebugPrint(System.Console.Out, "");
+                    return 0;
+                }
+
+                if (mode == "pretty-print")
+                {
+                    module = ObjectCache.parse(filename);
+                    Console.Write(ParseNodeMeta.PrettyPrintModule(
+                                  interp,
+                                  (ObjectParseNode)module,
+                                  prettyOption == "semicolons"));
+                    return 0;
+                }
+
+                Node n;
+                if (useCache)
+                    n = ObjectCache.get(filename);
+                else
+                    n = ObjectCache.translate(filename);
+
+                if (mode == "no-run")
+                {
+                    return 0;
+                }
+
+                if (mode == "execution-tree")
+                {
+                    n.DebugPrint(Console.Out, "");
+                    return 0;
+                }
+
+                // otherwise just try to run
+                interp.EnterModule(Path.GetFileNameWithoutExtension(filename));
                 try
                 {
-                    //Console.WriteLine("========== PARSING ==========");
-                    module = parser.Parse();
-                    if (mode == "parse-tree")
+                    n.Evaluate(interp);
+                    return 0;
+                }
+                catch (GraceExceptionPacketException e)
+                {
+                    System.Console.Error.WriteLine("Uncaught exception:");
+                    ErrorReporting.WriteException(e.ExceptionPacket);
+                    if (e.ExceptionPacket.StackTrace != null)
                     {
-                        module.DebugPrint(System.Console.Out, "");
-                        return 0;
-                    }
-                    if (mode == "pretty-print")
-                    {
-                        Console.Write(
-                                ParseNodeMeta.PrettyPrintModule(
-                                    interp,
-                                    (ObjectParseNode)module,
-                                    prettyOption == "semicolons"));
-                        return 0;
-                    }
-                    //Console.WriteLine("========== TRANSLATING ==========");
-                    ExecutionTreeTranslator ett = new ExecutionTreeTranslator();
-                    Node eModule = ett.Translate(module as ObjectParseNode);
-                    if (mode == "execution-tree")
-                    {
-                        eModule.DebugPrint(Console.Out, "");
-                        return 0;
-                    }
-                    if (mode == "no-run")
-                        return 0;
-                    interp.EnterModule(
-                            Path.GetFileNameWithoutExtension(filename));
-                    try
-                    {
-                        eModule.Evaluate(interp);
-                    }
-                    catch (GraceExceptionPacketException e)
-                    {
-                        System.Console.Error.WriteLine("Uncaught exception:");
-                        ErrorReporting.WriteException(e.ExceptionPacket);
-                        if (e.ExceptionPacket.StackTrace != null)
+                        foreach (var l in e.ExceptionPacket.StackTrace)
                         {
-                            foreach (var l in e.ExceptionPacket.StackTrace)
-                            {
-                                System.Console.Error.WriteLine("    from "
-                                        + l);
-                            }
+                            System.Console.Error.WriteLine("    from " + l);
                         }
-                        return 1;
                     }
-                }
-                catch (StaticErrorException e)
-                {
-                    if (verbose)
-                        System.Console.WriteLine(e.StackTrace);
-                    if (errorCodeTarget != null)
-                    {
-                        File.WriteAllText(errorCodeTarget, e.Code);
-                    }
-                    ErrorReporting.WriteAllRecorded();
-                    return 1;
-                }
-                catch (Exception e)
-                {
-                    System.Console.Error.WriteLine(
-                            "An internal error occurred. "
-                            + "Debugging information follows.");
-                    System.Console.Error.WriteLine("Runtime version: "
-                            + Interpreter.GetRuntimeVersion());
-                    System.Console.Error.WriteLine(e);
-                    System.Console.Error.WriteLine(e.StackTrace);
-                    System.Console.Error.WriteLine(
-                            "\nAn internal error occurred. "
-                            + "This is a bug in the implementation.");
                     return 1;
                 }
             }
-            return 0;
+            catch (StaticErrorException e)
+            {
+                if (verbose)
+                    System.Console.WriteLine(e.StackTrace);
+                if (errorCodeTarget != null)
+                {
+                    File.WriteAllText(errorCodeTarget, e.Code);
+                }
+                ErrorReporting.WriteAllRecorded();
+                return 1;
+            }
+            catch (Exception e)
+            {
+                System.Console.Error.WriteLine(
+                        "An internal error occurred. "
+                        + "Debugging information follows.");
+                System.Console.Error.WriteLine("Runtime version: "
+                        + Interpreter.GetRuntimeVersion());
+                System.Console.Error.WriteLine(e);
+                System.Console.Error.WriteLine(e.StackTrace);
+                System.Console.Error.WriteLine(
+                        "\nAn internal error occurred. "
+                        + "This is a bug in the implementation.");
+                return 1;
+            }
         }
 
         static bool writeFile(string filename, string name)

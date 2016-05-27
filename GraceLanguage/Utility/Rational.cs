@@ -15,6 +15,7 @@ namespace Grace.Utility
     /// sense, and are bounded only by memory. They use BigInteger
     /// internally, and make no gestures towards efficiency.
     /// </remarks>
+    [Serializable]
     public class Rational
     {
         private static BigInteger maxInt = int.MaxValue;

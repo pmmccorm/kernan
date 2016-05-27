@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Grace.Execution;
 using Grace.Parsing;
+using System;
 
 namespace Grace.Runtime
 {
     /// <summary>A Grace object</summary>
+    [Serializable]
     public class GraceObject
     {
         /// <summary>Certain indicators that can be embedded in an

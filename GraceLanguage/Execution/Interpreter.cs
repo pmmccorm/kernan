@@ -10,6 +10,7 @@ namespace Grace.Execution
 {
     /// <summary>An interpreter tracking the state of the world in an
     /// execution of a Grace program.</summary>
+    [Serializable]
     public class Interpreter : EvaluationContext
     {
         private static bool debugMessagesActive;
@@ -49,6 +50,7 @@ namespace Grace.Execution
 
         /// <summary>A rememberable Memo that allows restoring interpreter
         /// state at a later point</summary>
+        [Serializable]
         public class ScopeMemo
         {
             private readonly ScopeLink link;

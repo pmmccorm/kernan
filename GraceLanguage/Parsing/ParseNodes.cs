@@ -10,6 +10,7 @@ using Grace.Execution;
 namespace Grace.Parsing
 {
     /// <summary>A concrete syntax node</summary>
+    [Serializable]
     public abstract class ParseNode
     {
         private int _line;
@@ -89,6 +90,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for an Object</summary>
+    [Serializable]
     public class ObjectParseNode : ParseNode
     {
         private List<ParseNode> _body;
@@ -158,6 +160,7 @@ namespace Grace.Parsing
     /// <summary>
     /// A component of a method name.
     /// </summary>
+    [Serializable]
     public abstract class SignaturePartParseNode : ParseNode
     {
         /// <summary>Whether this must be the last part of the name</summary>
@@ -191,6 +194,7 @@ namespace Grace.Parsing
     /// <summary>
     /// An ordinary literal part of a method signature.
     /// </summary>
+    [Serializable]
     public class OrdinarySignaturePartParseNode : SignaturePartParseNode
     {
         /// <summary>
@@ -251,6 +255,7 @@ namespace Grace.Parsing
     /// <summary>
     /// Declared signature of a method
     /// </summary>
+    [Serializable]
     public class SignatureParseNode : ParseNode
     {
         private IList<SignaturePartParseNode> _parts =
@@ -324,6 +329,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a method declaration</summary>
+    [Serializable]
     public class MethodDeclarationParseNode : ParseNode
     {
         /// <summary>Signature of this method</summary>
@@ -369,6 +375,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a class declaration</summary>
+    [Serializable]
     public class ClassDeclarationParseNode : ParseNode
     {
 
@@ -413,6 +420,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a trair declaration</summary>
+    [Serializable]
     public class TraitDeclarationParseNode : ParseNode
     {
 
@@ -457,6 +465,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a type statement</summary>
+    [Serializable]
     public class TypeStatementParseNode : ParseNode
     {
         private ParseNode _baseName;
@@ -522,6 +531,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a type</summary>
+    [Serializable]
     public class TypeParseNode : ParseNode
     {
         private List<ParseNode> _body;
@@ -561,6 +571,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a block</summary>
+    [Serializable]
     public class BlockParseNode : ParseNode
     {
         private List<ParseNode> _parameters;
@@ -614,6 +625,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a varargs parameter</summary>
+    [Serializable]
     public class VarArgsParameterParseNode : ParseNode
     {
         private ParseNode _name;
@@ -649,6 +661,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a typed parameter</summary>
+    [Serializable]
     public class TypedParameterParseNode : ParseNode
     {
         private ParseNode _name;
@@ -704,6 +717,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a var declaration</summary>
+    [Serializable]
     public class VarDeclarationParseNode : ParseNode
     {
         private ParseNode _name;
@@ -785,6 +799,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a def declaration</summary>
+    [Serializable]
     public class DefDeclarationParseNode : ParseNode
     {
         private ParseNode _name;
@@ -863,6 +878,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a list of annotations</summary>
+    [Serializable]
     public class AnnotationsParseNode : ParseNode
     {
         List<ParseNode> _annotations = new List<ParseNode>();
@@ -920,6 +936,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for an operator</summary>
+    [Serializable]
     public class OperatorParseNode : ParseNode
     {
         private ParseNode _left;
@@ -978,6 +995,7 @@ namespace Grace.Parsing
 
 
     /// <summary>Parse node for a prefix operator</summary>
+    [Serializable]
     public class PrefixOperatorParseNode : ParseNode
     {
         private string _name;
@@ -1022,6 +1040,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a bind :=</summary>
+    [Serializable]
     public class BindParseNode : ParseNode
     {
         private ParseNode _left;
@@ -1067,6 +1086,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a number</summary>
+    [Serializable]
     public class NumberParseNode : ParseNode
     {
         private int _base;
@@ -1118,6 +1138,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for an identifier</summary>
+    [Serializable]
     public class IdentifierParseNode : ParseNode
     {
         private string _name;
@@ -1188,6 +1209,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a string literal</summary>
+    [Serializable]
     public class StringLiteralParseNode : ParseNode
     {
         private string _value;
@@ -1233,6 +1255,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a interpolated string</summary>
+    [Serializable]
     public class InterpolatedStringParseNode : ParseNode
     {
         private List<ParseNode> _parts;
@@ -1268,6 +1291,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for an implicit-receiver bracket request</summary>
+    [Serializable]
     public class ImplicitBracketRequestParseNode : ParseNode
     {
         /// <summary>Name of this method</summary>
@@ -1303,6 +1327,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for an explicit-receiver bracket request</summary>
+    [Serializable]
     public class ExplicitBracketRequestParseNode : ParseNode
     {
         /// <summary>Name of this method</summary>
@@ -1345,6 +1370,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a implicit-receiver request</summary>
+    [Serializable]
     public class ImplicitReceiverRequestParseNode : ParseNode
     {
         private List<ParseNode> _nameParts;
@@ -1439,6 +1465,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a explicit-receiver request</summary>
+    [Serializable]    
     public class ExplicitReceiverRequestParseNode : ParseNode
     {
         private ParseNode _receiver;
@@ -1533,6 +1560,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for an inherits clause</summary>
+    [Serializable]
     public class InheritsParseNode : ParseNode
     {
         private ParseNode _from;
@@ -1607,6 +1635,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a uses statement</summary>
+    [Serializable]
     public class UsesParseNode : ParseNode
     {
         private ParseNode _from;
@@ -1681,6 +1710,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for an alias clause</summary>
+    [Serializable]
     public class AliasParseNode : ParseNode
     {
 
@@ -1717,6 +1747,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for an exclude clause</summary>
+    [Serializable]
     public class ExcludeParseNode : ParseNode
     {
         /// <summary>Name of excluded method</summary>
@@ -1745,6 +1776,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for an import</summary>
+    [Serializable]
     public class ImportParseNode : ParseNode
     {
         private ParseNode _path;
@@ -1808,6 +1840,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a dialect declaration</summary>
+    [Serializable]
     public class DialectParseNode : ParseNode
     {
         private ParseNode _path;
@@ -1842,6 +1875,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a return statement</summary>
+    [Serializable]
     public class ReturnParseNode : ParseNode
     {
         private ParseNode _returnValue;
@@ -1879,6 +1913,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a parenthesised expression</summary>
+    [Serializable]
     public class ParenthesisedParseNode : ParseNode
     {
         private ParseNode _expr;
@@ -1913,6 +1948,7 @@ namespace Grace.Parsing
     }
 
     /// <summary>Parse node for a comment</summary>
+    [Serializable]
     public class CommentParseNode : ParseNode
     {
         private string _value;

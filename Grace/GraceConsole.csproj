@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleEntryPoint.cs" />
+    <Compile Include="ObjectCache.cs" />
+    <Compile Include="OCTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ActiveLineEditor.cs" />
   </ItemGroup>

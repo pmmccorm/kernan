@@ -92,6 +92,7 @@ namespace Grace.Runtime
     /// <summary>
     /// A dynamic method that may be attached to an object and requested.
     /// </summary>
+    [Serializable]
     public class Method
     {
         private MethodNode code;
@@ -295,6 +296,7 @@ namespace Grace.Runtime
 
     /// <summary>A Grace method wrapping a native method accepting
     /// a single Grace argument, the receiver, and an interpreter</summary>
+    [Serializable]
     public class DelegateMethodReceiver1Ctx : Method
     {
         readonly NativeMethodReceiver1Ctx method;
@@ -410,6 +412,7 @@ namespace Grace.Runtime
     /// <remarks>
     /// This type of method is reusable between instances.
     /// </remarks>
+    [Serializable]
     public class DelegateMethodTyped<T> : Method
         where T : GraceObject
     {
@@ -439,6 +442,7 @@ namespace Grace.Runtime
     /// <remarks>
     /// This type of method is reusable between instances.
     /// </remarks>
+    [Serializable]
     public class DelegateMethodTyped0<T> : Method
         where T : GraceObject
     {

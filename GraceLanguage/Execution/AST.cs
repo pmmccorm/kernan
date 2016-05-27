@@ -12,6 +12,7 @@ namespace Grace.Execution
 
     /// <summary>An abstract executable representation of a piece of
     /// source code</summary>
+    [Serializable]
     public abstract class Node : GraceObject
     {
         /// <summary>The original source code location whence this
@@ -155,6 +156,7 @@ namespace Grace.Execution
     /// A node representing an implicit value arising from an absent
     /// specification in the source text.
     /// </summary>
+    [Serializable]
     public class ImplicitNode : Node
     {
         private string kind;
@@ -201,6 +203,7 @@ namespace Grace.Execution
     }
 
     /// <summary>A dialect statement</summary>
+    [Serializable]
     public class DialectNode : Node
     {
 
@@ -286,6 +289,7 @@ namespace Grace.Execution
     }
 
     /// <summary>An import statement</summary>
+    [Serializable]
     public class ImportNode : Node
     {
 
@@ -388,6 +392,7 @@ namespace Grace.Execution
     }
 
     /// <summary>A method request with a syntactic receiver</summary>
+    [Serializable]
     public class ExplicitReceiverRequestNode : RequestNode
     {
         private Node receiver;
@@ -497,6 +502,7 @@ namespace Grace.Execution
     }
 
     /// <summary>A method request with no syntactic receiver</summary>
+    [Serializable]
     public class ImplicitReceiverRequestNode : RequestNode
     {
         internal ImplicitReceiverRequestNode(Token location, ParseNode source)
@@ -632,6 +638,7 @@ namespace Grace.Execution
     }
 
     /// <summary>A method request, either explicit or implicit</summary>
+    [Serializable]
     public abstract class RequestNode : Node, IEnumerable<RequestPartNode>
     {
 
@@ -817,6 +824,7 @@ namespace Grace.Execution
     }
 
     /// <summary>Specialisation for if-then requests</summary>
+    [Serializable]
     public class IfThenRequestNode : ImplicitReceiverRequestNode
     {
         private bool defer;
@@ -919,6 +927,7 @@ namespace Grace.Execution
     }
 
     /// <summary>Specialisation for for-do requests</summary>
+    [Serializable]
     public class ForDoRequestNode : ImplicitReceiverRequestNode
     {
         private bool defer;
@@ -1015,6 +1024,7 @@ end:
     }
 
     /// <summary>A part of a method name and its arguments</summary>
+    [Serializable]
     public class RequestPartNode : GraceObject
     {
         private string name;
@@ -1133,6 +1143,7 @@ end:
     }
 
     /// <summary>An object constructor expression</summary>
+    [Serializable]
     public class ObjectConstructorNode : Node
     {
         private List<Node> body = new List<Node>();
@@ -1433,6 +1444,7 @@ end:
     }
 
     /// <summary>A method declaration</summary>
+    [Serializable]
     public class MethodNode : Node
     {
         private List<Node> body = new List<Node>();
@@ -1753,6 +1765,7 @@ end:
     }
 
     /// <summary>A block expression</summary>
+    [Serializable]
     public class BlockNode : Node
     {
         private List<Node> parameters;
@@ -1859,6 +1872,7 @@ end:
     }
 
     /// <summary>A numeric literal</summary>
+    [Serializable]
     public class NumberLiteralNode : Node
     {
 
@@ -1968,6 +1982,7 @@ end:
     }
 
     /// <summary>A string literal</summary>
+    [Serializable]
     public class StringLiteralNode : Node
     {
 
@@ -2024,6 +2039,7 @@ end:
     }
 
     /// <summary>A bare identifier</summary>
+    [Serializable]
     public abstract class IdentifierNode : Node
     {
 
@@ -2059,6 +2075,7 @@ end:
     }
 
     /// <summary>A var declaration</summary>
+    [Serializable]
     public class VarDeclarationNode : Node
     {
 
@@ -2214,6 +2231,7 @@ end:
     }
 
     /// <summary>A def declaration</summary>
+    [Serializable]
     public class DefDeclarationNode : Node
     {
 
@@ -2362,6 +2380,7 @@ end:
     }
 
     /// <summary>A return statement</summary>
+    [Serializable]
     public class ReturnNode : Node
     {
 
@@ -2428,6 +2447,7 @@ end:
     }
 
     /// <summary>A placeholder node with no effect</summary>
+    [Serializable]
     public class NoopNode : Node
     {
 
@@ -2463,6 +2483,7 @@ end:
     }
 
     /// <summary>A type literal</summary>
+    [Serializable]
     public class TypeNode : Node
     {
         private List<SignatureNode> body = new List<SignatureNode>();
@@ -2529,6 +2550,7 @@ end:
     }
 
     /// <summary>A parameter a : b</summary>
+    [Serializable]
     public class ParameterNode : IdentifierNode
     {
 
@@ -2625,6 +2647,7 @@ end:
     }
 
     /// <summary>An inherits clause</summary>
+    [Serializable]
     public class InheritsNode : Node
     {
 
@@ -2764,6 +2787,7 @@ end:
     /// <summary>
     /// A group of "is" annotations.
     /// </summary>
+    [Serializable]
     public class AnnotationsNode : Node, IEnumerable<Node>
     {
 
@@ -2868,6 +2892,7 @@ end:
     }
 
     /// <summary>A method signature</summary>
+    [Serializable]
     public class SignatureNode : Node, IEnumerable<SignaturePartNode>
     {
 
@@ -2994,6 +3019,7 @@ end:
     /// <summary>
     /// A component of a method signature.
     /// </summary>
+    [Serializable]
     public abstract class SignaturePartNode : Node
     {
         /// <summary>Name of the part</summary>
@@ -3018,6 +3044,7 @@ end:
         }
     }
     /// <summary>A literal method signature part</summary>
+    [Serializable]
     public class OrdinarySignaturePartNode : SignaturePartNode
     {
 
