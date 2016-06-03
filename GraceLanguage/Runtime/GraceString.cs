@@ -97,6 +97,7 @@ namespace Grace.Runtime
             Value = val;
         }
 
+        // TODO: initialize this with re-use instead of wiping out GraceObject's default methods
         private static Dictionary<string, Method> createSharedMethods()
         {
             if (sharedMethods != null)

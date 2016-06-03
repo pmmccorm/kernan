@@ -52,6 +52,8 @@ namespace Grace.Runtime
             Value = Rational.Create(val);
         }
 
+        // TODO: the way this initializes GraceObject it just overwrites all methods.
+        //       instead we should add then like normal..
         private static Dictionary<string, Method> createSharedMethods()
         {
             if (sharedMethods != null)
@@ -71,6 +73,8 @@ namespace Grace.Runtime
                 { "<(_)", new DelegateMethodTyped1<GraceNumber>(mLessThan) },
                 { "<=(_)", new DelegateMethodTyped1<GraceNumber>(mLessEqual) },
                 { "asString",
+                    new DelegateMethodTyped0<GraceNumber>(mAsString) },
+                { "asDebugString",
                     new DelegateMethodTyped0<GraceNumber>(mAsString) },
                 { "prefix-", new DelegateMethodTyped0<GraceNumber>(mNegate) },
                 { "..(_)", new DelegateMethodTyped1Ctx<GraceNumber>(mDotDot) },
@@ -338,7 +342,7 @@ namespace Grace.Runtime
         /// <summary>Native method for Grace asString</summary>
         private static GraceObject mAsString(GraceNumber self)
         {
-            return GraceString.Create("" + self.Value);
+            return GraceString.Create(self.Value.ToString());
         }
 
         /// <summary>Make a Grace number</summary>
@@ -395,19 +399,9 @@ namespace Grace.Runtime
             _low = start;
             _high = end;
             _step = step;
-            AddMethod("..(_)", null);
-            AddMethod("asString", null);
+            AddMethod("..(_)", new DelegateMethod1Ctx(mDotDot));
+            AddMethod("asString", new DelegateMethod0Ctx(mAsString));
             AddMethod("do(_)", new DelegateMethod1Ctx(mDo));
-        }
-
-        protected override Method getLazyMethod(string name)
-        {
-            switch(name)
-            {
-                case "..(_)": return new DelegateMethod1Ctx(mDotDot);
-                case "asString": return new DelegateMethod0Ctx(mAsString);
-            }
-            return base.getLazyMethod(name);
         }
 
         private GraceObject mAsString(EvaluationContext ctx)

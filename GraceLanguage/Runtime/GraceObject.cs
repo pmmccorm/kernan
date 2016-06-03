@@ -160,9 +160,12 @@ namespace Grace.Runtime
                 // but should not be defined on all part-objects.
                 // User objects obtain them by inheritance, but
                 // others will have them directly.
-                AddMethod("asString", null);
-                AddMethod("==(_)", null);
-                AddMethod("!=(_)", null);
+                AddMethod("==(_)", new DelegateMethodReceiver1Ctx(mEqualsEquals));
+                AddMethod("!=(_)", new DelegateMethodReceiver1Ctx(mNotEquals));
+                AddMethod("hash", new DelegateMethodReceiver0Ctx(HashCode));
+                AddMethod("match", new DelegateMethodReceiver1Ctx(Match));
+                AddMethod("asString", new DelegateMethodReceiver0Ctx(AsString));
+                AddMethod("asDebugString", new DelegateMethodReceiver0Ctx(AsDebugString));
             }
         }
 
@@ -196,6 +199,20 @@ namespace Grace.Runtime
             return GraceString.Create(self.ToString());
         }
 
+        /// <summary>Native method supporting Grace AsDebugString, TODO make debug</summary>
+        public virtual GraceObject AsDebugString(EvaluationContext ctx,
+                GraceObject self)
+        {
+            return GraceString.Create(self.ToString());
+        }
+
+        /// <summary>Native method supporting Grace hash</summary>
+        public virtual GraceObject HashCode(EvaluationContext ctx,
+                GraceObject self)
+        {
+            return GraceNumber.Create(self.GetHashCode());
+        }
+
         /// <summary>Native method supporting Grace ==</summary>
         /// <param name="ctx">Current interpreter</param>
         /// <param name="self">Receiver</param>
@@ -216,6 +233,17 @@ namespace Grace.Runtime
                 GraceObject other)
         {
             return GraceBoolean.Create(!object.ReferenceEquals(self, other));
+        }
+
+        /// <summary>Native method supporting Grace match scheme</summary>
+        /// <param name="ctx">Current interpreter</param>
+        /// <param name="self">Receiver</param>
+        /// <param name="other">Object to compare</param>
+        private static GraceObject Match(EvaluationContext ctx,
+                GraceObject self,
+                GraceObject other)
+        {
+            return Matching.SuccessfulMatch(ctx, self);
         }
 
         /// <summary>Remove a method from this object</summary>
@@ -266,34 +294,6 @@ namespace Grace.Runtime
         }
 
         /// <summary>
-        /// Get a method by a given name on an object that was
-        /// not allocated in advance.
-        /// </summary>
-        /// <remarks>
-        /// A method can be added with a name, but a null MethodNode.
-        /// Such a method is "lazy" and will be computed (and cached)
-        /// when first accessed, if ever.
-        /// </remarks>
-        /// <param name="name">Name of method to create</param>
-        protected virtual Method getLazyMethod(string name)
-        {
-            Method m;
-            switch(name)
-            {
-                case "asString":
-                    m = new DelegateMethodReceiver0Ctx(AsString);
-                    return m;
-                case "==(_)":
-                    m = new DelegateMethodReceiver1Ctx(mEqualsEquals);
-                    return m;
-                case "!=(_)":
-                    m = new DelegateMethodReceiver1Ctx(mNotEquals);
-                    return m;
-            }
-            return null;
-        }
-
-        /// <summary>
         /// Find a method node with a given name in this object
         /// or its parents.
         /// </summary>
@@ -302,8 +302,6 @@ namespace Grace.Runtime
         {
             if (objectMethods.ContainsKey(name))
             {
-                if (objectMethods[name] == null)
-                    objectMethods[name] = getLazyMethod(name);
                 return objectMethods[name];
             }
             if (includeDefaults && defaultExtensions.ContainsKey(name))

@@ -32,12 +32,16 @@ namespace Grace.Runtime
             this.node = node;
             lexicalScope = ctx.Memorise();
             applyName = MethodHelper.ArityNamePart("apply", parameters.Count);
-            AddMethod(applyName, null);
-            AddMethod("spawn", null);
-            AddMethod("asString", null);
+
+            AddMethod(applyName, new DelegateMethodReq(Apply));
+            AddMethod("spawn", new DelegateMethod0Ctx(mSpawn));
+            AddMethod("asString", new DelegateMethod0Ctx(mAsString));
+            AddMethod("match(_)", new DelegateMethodReq(Match));
+            AddMethod("asDebugString", new DelegateMethod0Ctx(mAsString));
+
+            stringification = GraceString.Create("{ _ -> native code }");
             if (parameters.Count == 1)
             {
-                AddMethod("match(_)", null);
                 AddMethod("|(_)", Matching.OrMethod);
                 AddMethod("&(_)", Matching.AndMethod);
                 var par = parameters[0];
@@ -60,27 +64,6 @@ namespace Grace.Runtime
                     };
                 }
             }
-        }
-
-        private GraceBlock(Action<GraceObject> act)
-        {
-            AddMethod("apply(_)", null);
-            AddMethod("spawn", null);
-            AddMethod("asString", null);
-            stringification = GraceString.Create("{ _ -> native code }");
-        }
-
-        /// <inheritdoc />
-        protected override Method getLazyMethod(string name)
-        {
-            if (name == applyName)
-                return new DelegateMethodReq(Apply);
-            switch(name) {
-                case "match(_)": return new DelegateMethodReq(Match);
-                case "spawn": return new DelegateMethod0Ctx(mSpawn);
-                case "asString": return new DelegateMethod0Ctx(mAsString);
-            }
-            return base.getLazyMethod(name);
         }
 
         /// <summary>
@@ -113,6 +96,7 @@ namespace Grace.Runtime
             return new GraceBlock(ctx, parameters, body, node);
         }
 
+        //TODO: fix this stringification
         private GraceObject mAsString(EvaluationContext ctx)
         {
             if (stringification != null)
@@ -281,8 +265,8 @@ namespace Grace.Runtime
         private NativeBlock_1d(Action<GraceObject> act)
         {
             action = act;
-            AddMethod("apply(_)", null);
-            AddMethod("asString", null);
+            AddMethod("apply(_)", new DelegateMethod1(mApply));
+            AddMethod("asString", new DelegateMethod0Ctx(mAsString));
             stringification = GraceString.Create("{ _ -> native code }");
         }
 
@@ -299,17 +283,6 @@ namespace Grace.Runtime
         {
             action(arg);
             return GraceObject.Done;
-        }
-
-        /// <inheritdoc />
-        protected override Method getLazyMethod(string name)
-        {
-            if (name == "apply(_)")
-                return new DelegateMethod1(mApply);
-            switch(name) {
-                case "asString": return new DelegateMethod0Ctx(mAsString);
-            }
-            return base.getLazyMethod(name);
         }
 
         private GraceObject mAsString(EvaluationContext ctx)
