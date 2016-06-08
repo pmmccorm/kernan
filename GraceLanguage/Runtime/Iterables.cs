@@ -97,10 +97,11 @@ namespace Grace.Runtime
                 );
     }
 
+    // TODO: rename to LineUp and sync w/ spec
     /// <summary>The iterable created by *variadic parameters</summary>
     public class GraceVariadicList : GraceObject
     {
-        private List<GraceObject> elements = new List<GraceObject>();
+        public List<GraceObject> elements = new List<GraceObject>();
 
         /// <summary>Empty list</summary>
         public GraceVariadicList()

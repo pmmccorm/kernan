@@ -20,7 +20,7 @@ namespace Grace.Runtime
             /// <summary>Came from an object constructor</summary>
             ObjectConstructor = 4
         }
-        private Dictionary<string, Method> objectMethods;
+        public Dictionary<string, Method> objectMethods;
 
         /// <summary>
         /// Gives the names of all non-operator methods on

@@ -1,3 +1,4 @@
+import "mirrors" as mirror
 
 method if(cond) then(blk) {
     cond.ifTrue(blk)
@@ -2913,4 +2914,9 @@ method try(b) catch(e1) catch(e2) catch(e3) catch(e4) catch (e5) {
 
 method circumfix[ *x ] {
     x
+}
+
+method dir(obj) {
+    var r := mirror.reflect(obj)
+    r.methodNames.do { n -> print (n) }
 }

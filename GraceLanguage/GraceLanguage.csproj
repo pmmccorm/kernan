@@ -46,6 +46,7 @@
     <Compile Include="Execution\ExecutionTree.cs" />
     <Compile Include="Execution\Interpreter.cs" />
     <Compile Include="Execution\WebSocket.cs" />
+    <Compile Include="modules\mirrors.cs" />
     <Compile Include="Parsing\Lexer.cs" />
     <Compile Include="Parsing\ParseNodes.cs" />
     <Compile Include="Parsing\ParseNodeVisitor.cs" />
@@ -110,6 +111,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <NativeModule Include="modules/mirrors.cs" />
     <NativeModule Include="modules/platform\memory.cs" />
     <NativeModule Include="modules/websocket\dom.cs" />
     <NativeModule Include="modules/websocket\serve.cs" />
