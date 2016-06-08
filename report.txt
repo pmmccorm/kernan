@@ -1,0 +1,69 @@
+Patrick McCormick
+cs 520 OOP - Final project
+
+** Serializing AST nodes.
+
+My original project idea was to serialize the lexed,parsed,translated nodes
+produced by the Kernan compiler to disk in a cache. Kernan represents a grace
+class internally as a C# class (deriving from GraceObject), so simply marking
+the nodes as [Serializable] should work, plus all the machinery for writing 
+the objects to disk and marshalling them back.
+
+This works (see: https://github.com/pmmccorm/kernan/tree/object_cache), but
+because of the way the translated objects are represented the size of the
+serialized artifacts turns out to be very large: from 200 to 1200 times the
+size of the source!
+
+Each constructed object contains its token and the associated token parser.
+These values are used for reporting errors at runtime (and some at compile
+time). Removing these members means giving up error reporting-- an 
+unacceptable trade off for a language designed for teaching.
+
+Anyways the architecture of the cache is very simple:
+ 
+static ObjectCache:
+	get(filename) -> Node
+	parse(filename) -> ParseNode
+	translate(filename) -> Node
+
+Caching translation goes through get method, and uncached parsing and 
+translation can go through the parse and translate methods respectively.
+
+All very straight-forward.
+
+** Reflection
+
+Instead of attempt to reduce the size of the serialized objects several
+orders of magnitude and re-architect the lexer/parser in the process I
+decided to do something completely different: implement reflection in Kernan.
+
+I implemented the "mirrors" interface from minigrace.
+
+See:
+https://github.com/pmmccorm/kernan/commit/8e06c3fdbc0607d37cadad581983d6ff33a8f48a
+
+Minus a few things: requestWithArgs (how is this different
+than request), isVariableArity (Grace language removed var-args methods),
+and loadDynamicModule.
+
+Kernan has a defined way (but unused?) to create a native module. That is
+a .dll loaded on import with an entry point that returns a Grace object
+instance.
+
+The rest was just mapping Kernan's internal representation of methods and
+their names (Method class and strings) to Grace objects. This was pretty
+much mapping:
+
+C#				Grace
+string			GraceString
+Method			MethodMirror
+MethodRequest	Lineup<GraceObject>
+
+The hardest part was constructing the MethodRequest object: the API
+provided doesn't appear to be made to build them up from scratch.
+
+Everything seems to work. I do some error checking and throw Grace
+exceptions where I can (if request() doesn't give proper arguments,
+if getMethod(name) requests a method that does not exist).
+
+See mirrors.cs for the details.
